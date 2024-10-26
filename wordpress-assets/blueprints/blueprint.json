@@ -1,0 +1,50 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"preferredVersions": {
+		"php": "8.0",
+		"wp": "latest"
+	},
+	"siteOptions": {
+		"blogname": "WS Form LITE Demo"
+	},
+	"landingPage": "/wp-admin/admin.php?page=ws-form-welcome",
+	"steps": [
+		{
+			"step": "defineWpConfigConsts",
+			"consts": {
+				"WP_DEBUG": true
+			}
+		},
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		},
+		{
+			"step": "mkdir",
+			"path": "/wp-content/plugins/"
+		},
+		{
+			"step": "writeFile",
+			"path": "/wordpress/wp-content/plugins/ws-form-lite-demo.php",
+			"data": "<?php\n\n \t\/*\n\t * Plugin Name:       WS Form LITE Demo\n\t * Plugin URI:        https:\/\/wordpress.org\/plugins\/ws-form\/\n\t * Description:       Handles WS Form LITE Demo Functionality\n\t * Version:           1.0.0\n\t * Requires at least: 5.2\n\t * Requires PHP:      7.2\n\t * Author:            @westguard\n\t * Author URI:        https:\/\/wsform.com\n\t * License:           GPL v2 or later\n\t * License URI:       https:\/\/www.gnu.org\/licenses\/gpl-2.0.html\n\t *\/\n\n\t\/\/ Disable nag notices\n\tdefine('DISABLE_NAG_NOTICES', true);\n\n\t\/\/ Pluggable wp_mail function\n\tif(!function_exists('wp_mail')) {\n\n\t\tfunction wp_mail($to, $subject, $message, $headers = '', $attachments = []) {\n\n\t\t\t\/\/ Do nothing\n\t\t\treturn true;\n\t\t}\n\t}\n\n\t\/\/ Add header message\n\tif(!empty($_GET['wsf_preview_form_id'])) {\n\n\t\tadd_action( 'wp_footer', function() {\n?>\n<div style=\"position: fixed; bottom: 0; left: 0; width: calc(100% - 40px); padding: 0 20px;\"><div class=\"wsf-alert wsf-alert-information\">Please note that WordPress Playground does not support sending email notifications.<\/div><\/div>\n<?php\n\t\t});\n\t}\n"		},
+		{
+			"step": "activatePlugin",
+			"pluginPath": "/wordpress/wp-content/plugins/ws-form-lite-demo.php"
+		},
+		{
+			"step": "installTheme",
+			"themeZipFile": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfour"
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginZipFile": {
+				"resource": "wordpress.org/plugins",
+				"slug": "ws-form"
+			}
+		}
+	]
+}
